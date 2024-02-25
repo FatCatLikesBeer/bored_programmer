@@ -77,28 +77,34 @@
     "category": "Programming",
     "technologies": ["Express", "JavaScript"]
   },
-{
-    "activity": "Find a Programmer's Group",
+  {
+    "activity": "Find a Programmer Group/Club",
     "description": "Join a programming club at your school or look for local programmers mixers on MeetUp",
     "category": "Social",
     "technologies": [""]
   },
-{
+  {
     "activity": "Look up free APIs",
     "description": "Learn to use APIs from a popular site or recreate a free test API from https://rapidapi.com/collection/list-of-free-apis",
     "category": "Programming",
     "technologies": ["API"]
   },
-{
+  {
     "activity": "Create your own hash map algorithm",
     "description": "Hash maps are the structure behind JavaScript objects and Python dictionaries. Try building that type yourself.",
     "category": "Programming",
     "technologies": ["Python", "JavaScript"]
   },
-{
+  {
     "activity": "Create a 3D cube in WebGL",
     "description": "Make a 3D cube in a web browser!",
     "category": "Programming",
     "technologies": ["JavaScript", "WebGL"]
+  },
+  {
+    "activity": "Start and Finish the tutorial for Expo",
+    "description": "Create an app that works for web, iOS, and Android!",
+    "category": "Programming",
+    "technologies": ["React", "Expo", "JavaScript"]
   }
 ]
