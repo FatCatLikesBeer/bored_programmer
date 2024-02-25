@@ -24,16 +24,16 @@
     "technologies": ["VIM"]
   },
   {
-    "activity": "Write a 'hello world' program in C",
-    "description": "",
+    "activity": "Write a 'hello world' program in a programming language you've never used.",
+    "description": "Try it in C, Swift, or Shell script!",
     "category": "Programming",
-    "technologies": ["C"]
+    "technologies": ["C", "Swift", "Shell"]
   },
   {
     "activity": "Create a video about a recent programming problem you solved.",
     "description": "Communicating and explaining a problem you just solved is a great way to really learn and understand what you just did.",
     "category": "Social",
-    "technologies": []
+    "technologies": ["Nature"]
   },
   {
     "activity": "Transfer a file using a terminal emulator and SCP.",
@@ -69,7 +69,7 @@
     "activity": "Turn off your computer and go for a walk.",
     "description": "Many of us are in front of our computers for way too long, and haven't restarted our computeres in a long time. Let's refresh both our own and our computer's memory with a nice quick walk!",
     "category": "Social",
-    "technologies": []
+    "technologies": ["Shoes"]
   },
   {
     "activity": "Build a file sharing site using Express",
@@ -81,7 +81,7 @@
     "activity": "Find a Programmer Group/Club",
     "description": "Join a programming club at your school or look for local programmers mixers on MeetUp",
     "category": "Social",
-    "technologies": [""]
+    "technologies": ["MeetUp"]
   },
   {
     "activity": "Look up free APIs",
