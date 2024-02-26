@@ -3,9 +3,21 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const mongoose = require('mongoose');
+mongoose.set('strictQuery', false);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const activityRoutes = require('./routes/activityRoutes.ejs');
+const categoryRoutes = require('./routes/categoryRoutes.ejs');
+const tagRoutes = require('./routes/tagRoutes.ejs');
+
+// Connect to MongoDB
+const mongoDb = process.env.MONGODB_URI;
+main().catch( err => console.log(err));
+async function main() {
+  await mongoose.connect(mongoDb);
+}
 
 var app = express();
 
