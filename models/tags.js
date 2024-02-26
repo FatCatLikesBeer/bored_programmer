@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 
 const TagSchema = new Schema({
   name: { type: String, required: true, minLength: 3, maxLength: 100 },
-})
+  description: { type: String, required: true, minLength: 3, maxLength: 100 },
+});
 
 // Virtual for bookinstance's URL
 TagSchema.virtual("url").get(function() {

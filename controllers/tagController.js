@@ -19,10 +19,14 @@ exports.tag_create_get = (req, res, next) => {
 // Tag Create POST
 exports.tag_create_post = [
   // Validate & sanitize the name field.
-  body("name", "Tag must contain at least 3 characters")
-  .trim()
-  .isLength({ min: 3 })
-  .escape(),
+  body("name", "Tag must contain at least 3 characters.")
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  body("description", "Description must contain at least 3 characters.")
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
 
   // Process request after validation and sanitation.
   asyncHandler(async (req, res, next) => {
@@ -30,7 +34,10 @@ exports.tag_create_post = [
     const errors = validationResult(req);
 
     // Create a tag object with esscaped and trimmed data.
-    const tag = new TagModel({ name: req.body.name });
+    const tag = new TagModel({
+      name: req.body.name,
+      description: req.body.description,
+    });
 
     if (!errors.isEmpty()) {
       // Errors exist. Render the form again with sanitized values/error messages.
@@ -60,6 +67,7 @@ exports.tag_create_post = [
 exports.tag_detail = asyncHandler(async (req, res, next) => {
   const tag = await TagModel.findById(req.params.id).exec();
   res.render('tag_detail', {
-    title: tag,
+    title: "Tag Detail",
+    tag: tag,
   })
 });
