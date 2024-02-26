@@ -55,3 +55,11 @@ exports.tag_create_post = [
     }
   }),
 ];
+
+// Tag Detail
+exports.tag_detail = asyncHandler(async (req, res, next) => {
+  const tag = await TagModel.findById(req.params.id).exec();
+  res.render('tag_detail', {
+    title: tag,
+  })
+});

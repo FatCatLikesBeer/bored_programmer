@@ -13,9 +13,7 @@ router.get('/create', tag_controller.tag_create_get);
 router.post('/create', tag_controller.tag_create_post);
 
 /* GET Tag Detail */
-router.get('/:id', function(req, res, next) {
-  res.send('TAG DETAIL GET: Not yet implemented');
-});
+router.get('/:id', tag_controller.tag_detail);
 
 /* GET DELETE Tag */
 router.get('/:id/delete', function(req, res, next) {
