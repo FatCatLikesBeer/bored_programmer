@@ -1,0 +1,11 @@
+<%- include('layout_head') -%>
+<% const tagName = typeof tag === 'undefined' ? '' : tag?.name %>
+<h1><%= title %><%= ": " + tagName %></h1>
+<form method="POST">
+  <div class="form-group">
+    <label for="name">Tag: <%= tagName %></label>
+    <input id="name" class="form-control" type="text" placeholder="Web, JavaScript, Swift, IDE, ect..." name="name" required value="<%= tagName %>" />
+  </div>
+    <input class="btn btn-primary" type="submit" value="Submit">
+</form>
+<%- include('layout_foot') -%>

@@ -8,9 +8,9 @@ mongoose.set('strictQuery', false);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-const activityRoutes = require('./routes/activityRoutes.ejs');
-const categoryRoutes = require('./routes/categoryRoutes.ejs');
-const tagRoutes = require('./routes/tagRoutes.ejs');
+const activityRouter = require('./routes/activityRoutes.js');
+const categoryRouter = require('./routes/categoryRoutes.js');
+const tagRouter = require('./routes/tagRoutes.js');
 
 // Connect to MongoDB
 const mongoDb = process.env.MONGODB_URI;
@@ -33,6 +33,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/tags', tagRouter);
+app.use('/categories', categoryRouter);
+app.use('/activities', activityRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

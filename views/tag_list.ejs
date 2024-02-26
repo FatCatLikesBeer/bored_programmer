@@ -1,0 +1,15 @@
+<%- include('layout_head') -%>
+<h1><%= title %></h1>
+<ul>
+<% tags.forEach( e => { %>
+<li><a href="<%= e.url %>"><%= e.name %></a></li>
+<% }); %>
+</ul>
+<% if (typeof errors != 'undefined') { %>
+  <ul>
+  <% errors.forEach(function(error) { %>
+    <li><%= error?.msg %></li>
+  <% }); %>
+  </ul>
+<% } %>
+<%- include('layout_foot') -%>
