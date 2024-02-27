@@ -23,10 +23,6 @@ exports.tag_create_post = [
     .trim()
     .isLength({ min: 3 })
     .escape(),
-  body("description", "Description must contain at least 3 characters.")
-    .trim()
-    .isLength({ min: 3 })
-    .escape(),
 
   // Process request after validation and sanitation.
   asyncHandler(async (req, res, next) => {
@@ -34,10 +30,7 @@ exports.tag_create_post = [
     const errors = validationResult(req);
 
     // Create a tag object with esscaped and trimmed data.
-    const tag = new TagModel({
-      name: req.body.name,
-      description: req.body.description,
-    });
+    const tag = new TagModel({ name: req.body.name });
 
     if (!errors.isEmpty()) {
       // Errors exist. Render the form again with sanitized values/error messages.
