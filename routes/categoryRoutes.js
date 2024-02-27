@@ -1,44 +1,32 @@
 var express = require('express');
 var router = express.Router();
 
+const category_controller = require('../controllers/categoryController.js');
+
 /* GET Categories page: list all tags */
-router.get('/', function(req, res, next) {
-  res.render('category_list', { title: 'Category List' });
-});
+router.get('/', category_controller.category_list);
 
 /* GET Create Category */
-router.get('/create', function(req, res, next) {
-  res.send('CREATE CATEGORY GET: Not yet implemented');
-});
+router.get('/create', category_controller.category_create_get);
 
 /* POST Create Category */
-router.post('/create', function(req, res, next) {
-  res.send('CREATE CATEGORY POST: Not yet implemented');
-});
-
-/* GET Category Detail */
-router.get('/:id', function(req, res, next) {
-  res.send('CATEGORY DETAIL GET: Not yet implemented');
-});
+router.post('/create', category_controller.category_create_post);
 
 /* GET DELETE Category */
-router.get('/:id/delete', function(req, res, next) {
-  res.send('DELETE CATEGORY GET: Not yet implemented');
-});
+router.get('/:id/delete', category_controller.category_delete_get);
 
 /* POST DELETE Category */
-router.post('/:id/delete', function(req, res, next) {
-  res.send('DELETE CATEGORY POST: Not yet implemented');
-});
+router.post('/:id/delete', category_controller.category_delete_post);
 
 /* GET UPDATE Category */
-router.get('/:id/update', function(req, res, next) {
-  res.send('UPDATE CATEGORY GET: Not yet implemented');
-});
+router.get('/:id/update', category_controller.category_update_get);
 
 /* POST UPDATE Category */
-router.post('/:id/update', function(req, res, next) {
-  res.send('UPDATE CATEGORY POST: Not yet implemented');
-});
+router.post('/:id/update', category_controller.category_update_post);
+
+/* GET Category Detail */
+router.get('/:id', function(req, res, next){
+	res.send("not yet working")
+} );
 
 module.exports = router;

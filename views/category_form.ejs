@@ -1,0 +1,19 @@
+<%- include('layout_head') -%>
+<% const categoryName = typeof category === 'undefined' ? '' : category?.name %>
+<h1><%= title %></h1>
+<form method="POST">
+  <div class="form-group">
+    <label for="name">Category: <%= categoryName %></label>
+    <input id="name" class="form-control" type="text" placeholder="Programming, IDE, Research..." name="name" required value="<%= categoryName %>" />
+  </div>
+  <input class="btn btn-primary" type="submit" value="Submit">
+</form>
+<br />
+<% if (typeof errors != 'undefined') { %>
+  <ul>
+  <% errors.forEach(function(error) { %>
+    <li><%= error?.msg %></li>
+  <% }); %>
+  </ul>
+<% } %>
+<%- include('layout_foot') -%>

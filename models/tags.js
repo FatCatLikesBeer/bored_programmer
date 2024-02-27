@@ -6,7 +6,7 @@ const TagSchema = new Schema({
   name: { type: String, required: true, minLength: 3, maxLength: 100 },
 });
 
-// Virtual for bookinstance's URL
+// Virtual for Tags URL
 TagSchema.virtual("url").get(function() {
   // We don't use an arrow function as we'll need the 'this' object
   return `/tags/${this._id}`;

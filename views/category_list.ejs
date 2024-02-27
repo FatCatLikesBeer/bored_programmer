@@ -1,4 +1,9 @@
 <%- include('layout_head') -%>
 <h1><%= title %></h1>
 <hr>
+<ul>
+<% categories.forEach( e => { %>
+  <li><%= e.name %></li>
+<% }); %>
+</ul>
 <%- include('layout_foot') -%>
