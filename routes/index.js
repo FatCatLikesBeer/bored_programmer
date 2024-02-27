@@ -6,8 +6,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Bored Programmer API' });
 });
 
-router.post('', function(req, res, next) {
-  res.render('index', { title: 'Change Successful' });
+router.post('/', function(req, res, next) {
+  res.send("This shouldn't do anyting, how did you get here?")
 });
 
 module.exports = router;
