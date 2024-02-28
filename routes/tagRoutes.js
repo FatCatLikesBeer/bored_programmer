@@ -16,23 +16,15 @@ router.post('/create', tag_controller.tag_create_post);
 router.get('/:id', tag_controller.tag_detail);
 
 /* GET DELETE Tag */
-router.get('/:id/delete', function(req, res, next) {
-  res.send('DELETE TAG GET: Not yet implemented');
-});
+router.get('/:id/delete', tag_controller.tag_delete_get);
 
 /* POST DELETE Tag */
-router.post('/:id/delete', function(req, res, next) {
-  res.send('DELETE TAG POST: Not yet implemented');
-});
+router.post('/:id/delete', tag_controller.tag_delete_post);
 
 /* GET UPDATE Tag */
-router.get('/:id/update', function(req, res, next) {
-  res.send('UPDATE TAG GET: Not yet implemented');
-});
+router.get('/:id/update', tag_controller.tag_update_get);
 
 /* POST UPDATE Tag */
-router.post('/:id/update', function(req, res, next) {
-  res.send('UPDATE TAG POST: Not yet implemented');
-});
+router.post('/:id/update', tag_controller.tag_update_post);
 
 module.exports = router;

@@ -2,7 +2,7 @@ const TagModel = require('../models/tags.js');
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
 
-// Tag List
+/* Tag List */
 exports.tag_list = asyncHandler(async (req, res, next) => {
   const allTags = await TagModel.find().sort({ name: 1 }).exec();
   res.render('tag_list', {
@@ -11,12 +11,12 @@ exports.tag_list = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Tag Create GET
+/* Tag Create GET */
 exports.tag_create_get = (req, res, next) => {
   res.render('tag_form', { title: "Create Tag" });
 };
 
-// Tag Create POST
+/* Tag Create POST */
 exports.tag_create_post = [
   // Validate & sanitize the name field.
   body("name", "Tag must contain at least 3 characters.")
@@ -56,7 +56,27 @@ exports.tag_create_post = [
   }),
 ];
 
-// Tag Detail
+/* Tag Update Get */
+exports.tag_update_get = asyncHandler(async (req, res, next) => {
+  res.send(`TAG UPDATE <b>GET</b>: Not yet implemented <br><br><h1>${req.params.id}</h1>`);
+});
+
+/* Tag Update Post */
+exports.tag_update_post = asyncHandler(async (req, res, next) => {
+  res.send(`TAG UPDATE <b>POST</b>: Not yet implemented <br><br><h1>${req.params.id}</h1>`);
+});
+
+/* Tag Delete Get */
+exports.tag_delete_get = asyncHandler(async (req, res, next) => {
+  res.send(`TAG DELETE <b>GET</b>: Not yet implemented <br><br><h1>${req.params.id}</h1>`);
+});
+
+/* Tag Delete Post */
+exports.tag_delete_post = asyncHandler(async (req, res, next) => {
+  res.send(`TAG DELETE <b>POST</b>: Not yet implemented <br><br><h1>${req.params.id}</h1>`);
+});
+
+/* Tag Detail */
 exports.tag_detail = asyncHandler(async (req, res, next) => {
   const tag = await TagModel.findById(req.params.id).exec();
   res.render('tag_detail', {
