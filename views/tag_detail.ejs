@@ -1,4 +1,10 @@
 <%- include('layout_head'); -%>
 <h1>Tag Detail: <%= tag.name %></h1>
 <hr>
+<h4>Activities with: <%= tag.name %></h4>
+<hr>
+<ul>
+<li><a href="<%= tag.url %>/update">Update</li>
+<li><a href="<%= tag.url %>/delete">Delete</li>
+</ul>
 <%- include('layout_foot'); -%>

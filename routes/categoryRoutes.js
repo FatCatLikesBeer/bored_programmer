@@ -25,8 +25,6 @@ router.get('/:id/update', category_controller.category_update_get);
 router.post('/:id/update', category_controller.category_update_post);
 
 /* GET Category Detail */
-router.get('/:id', function(req, res, next){
-	res.send("not yet working")
-} );
+router.get('/:id', category_controller.category_detail);
 
 module.exports = router;

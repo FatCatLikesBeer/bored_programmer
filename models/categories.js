@@ -9,7 +9,7 @@ const CategorySchema = new Schema({
 // Virtual for Category URL
 CategorySchema.virtual("url").get(function() {
   // We don't use an arrow function as we'll need the 'this' object
-  return `/tags/${this._id}`;
+  return `/categories/${this._id}`;
 });
 
 // Export model

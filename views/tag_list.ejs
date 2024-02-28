@@ -3,7 +3,7 @@
 <hr>
 <ul>
 <% tags.forEach( e => { %>
-<li><a href="<%= e.url %>"><%= e.name %></a></li>
+  <li><a href="<%= e.url %>"><%= e.name %></a></li>
 <% }); %>
 </ul>
 <% if (typeof errors != 'undefined') { %>

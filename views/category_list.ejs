@@ -3,7 +3,14 @@
 <hr>
 <ul>
 <% categories.forEach( e => { %>
-  <li><%= e.name %></li>
+  <li><a href="<%= e.url %>"><%= e.name %></a></li>
 <% }); %>
 </ul>
+<% if (typeof errors != 'undefined') { %>
+  <ul>
+  <% errors.forEach(function(error) { %>
+    <li><%= error?.msg %></li>
+  <% }); %>
+  </ul>
+<% } %>
 <%- include('layout_foot') -%>

@@ -24,7 +24,6 @@ exports.tag_create_post = [
     .isLength({ min: 3 })
     .escape(),
 
-  // Process request after validation and sanitation.
   asyncHandler(async (req, res, next) => {
     // Extract the validation errors from request.
     const errors = validationResult(req);
@@ -80,7 +79,7 @@ exports.tag_delete_post = asyncHandler(async (req, res, next) => {
 exports.tag_detail = asyncHandler(async (req, res, next) => {
   const tag = await TagModel.findById(req.params.id).exec();
   res.render('tag_detail', {
-    title: "Tag Detail",
+    title: `Tag: ${tag.name}`,
     tag: tag,
   })
 });
