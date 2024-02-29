@@ -1,0 +1,55 @@
+<%- include('layout_head') -%>
+<% const tags = typeof allTags != undefined ? allTags : undefined; %>
+<% const categories = typeof allCategories != undefined ? allCategories : undefined; %>
+<h1><%= title %></h1>
+<hr>
+<form method="POST">
+  <div class="form-group">
+    <label for="name">Activity Name: </label>
+    <input id="name" class="form-control" type="text" name="name" required  />
+  </div>
+  <div class="form-group">
+    <label for="description">Activity Description: </label>
+    <input id="description" class="form-control" type="text" name="description" required  />
+  </div>
+  <div class="form-group">
+    <label for="category">Categories: </label>
+    <select id="category" class="form-control" name="category" required>
+      <option value="">--Please Select A Category--</option>
+      <% for (const category of categories) { %>
+        <% if (typeof activity != 'undefined') { %>
+          <% if (category._id.toString() === activity.category._id.toString()) { %>
+            <option value="<%= category._id %>" selected><%= category.name %></option>
+          <% } else { %>
+            <option value="<%= category._id %>"><%= category.name %></option>
+          <% } %>
+        <% } else { %>
+          <option value="<%= category._id %>"><%= category.name %></option>
+        <% } %>
+      <% } %>
+    </select>
+  </div>
+  <div class="form-group">
+    <p>Tags:</p>
+    <% for (const tag of tags) { %>
+      <div style='display: inline; padding-right: 10px;'>
+        <% if (tag.checked) { %>
+          <input class="checkbox-input" type="checkbox" name="tag" id="<%= tag._id %>" value="<%= tag._id %>" checked/>
+        <% } else { %>
+          <input class="checkbox-input" type="checkbox" name="tag" id="<%= tag._id %>" value="<%= tag._id %>" />
+        <% } %>
+          <label for="<%= tag._id %>">&nbsp;<%= tag.name %></label>
+      </div>
+    <% } %>
+  </div>
+  <input class="btn btn-primary" type="submit" value="Submit">
+</form>
+<br />
+<% if (typeof errors != 'undefined') { %>
+  <ul>
+  <% errors.forEach(function(error) { %>
+    <li><%= error?.msg %></li>
+  <% }); %>
+  </ul>
+<% } %>
+<%- include('layout_foot') -%>

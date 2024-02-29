@@ -1,44 +1,30 @@
 var express = require('express');
 var router = express.Router();
 
+const activity_controller = require('../controllers/activityController.js');
+
 /* GET Activities page: list all tags */
-router.get('/', function(req, res, next) {
-  res.render('activity_list', { title: 'Activity List' });
-});
+router.get('/', activity_controller.activity_list);
 
 /* GET Create Activity */
-router.get('/create', function(req, res, next) {
-  res.send('CREATE ACTIVITY GET: Not yet implemented');
-});
+router.get('/create', activity_controller.activity_create_get);
 
 /* POST Create Activity */
-router.post('/create', function(req, res, next) {
-  res.send('CREATE ACTIVITY POST: Not yet implemented');
-});
-
-/* GET Activity Detail */
-router.get('/:id', function(req, res, next) {
-  res.send('ACTIVITY DETAIL GET: Not yet implemented');
-});
-
-/* GET DELETE Activity */
-router.get('/:id/delete', function(req, res, next) {
-  res.send('DELETE ACTIVITY GET: Not yet implemented');
-});
-
-/* POST DELETE Activity */
-router.post('/:id/delete', function(req, res, next) {
-  res.send('DELETE ACTIVITY POST: Not yet implemented');
-});
+router.post('/create', activity_controller.activity_create_post)
 
 /* GET UPDATE Activity */
-router.get('/:id/update', function(req, res, next) {
-  res.send('UPDATE ACTIVITY GET: Not yet implemented');
-});
+router.get('/:id/update', activity_controller.activity_update_get);
 
-/* POST UPDATE Activity */
-router.post('/:id/update', function(req, res, next) {
-  res.send('UPDATE ACTIVITY POST: Not yet implemented');
-});
+/* POST Update Activity */
+router.post('/:id/update', activity_controller.activity_update_post);
+
+/* GET DELETE Activity */
+router.get('/:id/delete', activity_controller.activity_delete_get);
+
+/* POST Delete Activity */
+router.post('/:id/delete', activity_controller.activity_delete_post)
+
+/* GET Activity Detail */
+router.get('/:id', activity_controller.activity_detail);
 
 module.exports = router;
