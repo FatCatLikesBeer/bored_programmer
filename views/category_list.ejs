@@ -1,5 +1,5 @@
 <%- include('layout_head') -%>
-<h1><%= title %></h1>
+<h1><%= title %>: <%= categories.length%> <%= categories.length > 1 ? "items" : "item" %></h1>
 <hr>
 <ul>
 <% categories.forEach( e => { %>

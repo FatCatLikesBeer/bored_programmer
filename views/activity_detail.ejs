@@ -1,7 +1,21 @@
 <%- include('layout_head') -%>
-<h1><%= title %></h1>
+<h1><%= title %>: <%= activity.name %></h1>
 <hr>
-<% if (typeof todo != 'undefined') { %>
-  <%= todo %>
-<% } %>
+<p>Name: <%= activity.name %></p>
+<p>Description: <%= activity.description %></p>
+<p>Category: <a href="<%= activity.category.url %>"><%= activity.category.name %></a></p>
+<p id="tagsList">Tags: 
+  <% const lastElem = activity.tag.slice(-1) %>
+  <% activity.tag.forEach( e => { %>
+    <a href="<%= e.url %>"><%= e.name %></a><%= lastElem.name == e.name ? "" : ", " %>
+  <% }); %>
+</p>
+<hr>
+<p><a href="<%= activity.url %>/delete">Delete</a></p>
+<p><a href="<%= activity.url %>/update">Update</a></p>
+<script>
+const tagList = document.getElementById("tagsList");
+const comma = tagList.lastChild;
+comma.remove();
+</script>
 <%- include('layout_foot') -%>

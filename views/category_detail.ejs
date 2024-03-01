@@ -1,10 +1,13 @@
 <%- include('layout_head'); -%>
 <h1>Category Detail: <%= category.name %></h1>
 <hr>
-<h4>Activities with: <%= category.name %></h4>
-<hr>
+<h4>Activities in: <%= category.name %></h4>
 <ul>
-<li><a href="<%= category.url %>/update">Update</li>
-<li><a href="<%= category.url %>/delete">Delete</li>
+  <% for (e of activities) { %>
+    <li><a href="<%= e.url %>"><%= e.name %></a></li>
+  <% } %>
 </ul>
+<hr>
+<p><a href="<%= category.url %>/update">Update</p>
+<p><a href="<%= category.url %>/delete">Delete</p>
 <%- include('layout_foot'); -%>

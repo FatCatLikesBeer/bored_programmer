@@ -1,4 +1,5 @@
 const CategoryModel = require('../models/categories.js');
+const ActivityModel = require('../models/activity.js');
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
 
@@ -80,10 +81,13 @@ exports.category_update_post = asyncHandler(async (req, res, next) => {
 
 /* Category Detail GET */
 exports.category_detail = asyncHandler(async (req, res, next) => {
-  const category = await CategoryModel.findById(req.params.id).exec();
+  const [category, activities] = await Promise.all([
+    CategoryModel.findById(req.params.id).exec(),
+    ActivityModel.find({ category: req.params.id }).exec(),
+  ])
   res.render('category_detail', {
     title: `Category: ${category.name}`,
     category: category,
+    activities: activities,
   })
-  // res.send(`CATEGORY DETAIL GET: Not yet implemented. <br><br><h1>${req.params.id}</h1>`);
 });

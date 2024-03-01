@@ -1,10 +1,13 @@
 <%- include('layout_head'); -%>
 <h1>Tag Detail: <%= tag.name %></h1>
 <hr>
-<h4>Activities with: <%= tag.name %></h4>
-<hr>
+<h4>Activities in: <%= tag.name %></h4>
 <ul>
-<li><a href="<%= tag.url %>/update">Update</li>
-<li><a href="<%= tag.url %>/delete">Delete</li>
+  <% for (e of activities) { %>
+    <li><a href="<%= e.url %>"><%= e.name %></a></li>
+  <% } %>
 </ul>
+<hr>
+<p><a href="<%= tag.url %>/update">Update</p>
+<p><a href="<%= tag.url %>/delete">Delete</p>
 <%- include('layout_foot'); -%>

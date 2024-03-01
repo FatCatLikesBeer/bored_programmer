@@ -1,4 +1,5 @@
 const TagModel = require('../models/tags.js');
+const ActivityModel = require('../models/activity.js');
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
 
@@ -7,7 +8,7 @@ exports.tag_list = asyncHandler(async (req, res, next) => {
   const allTags = await TagModel.find().sort({ name: 1 }).exec();
   res.render('tag_list', {
     title: 'List of Tags',
-    tags: allTags ,
+    tags: allTags,
   });
 });
 
@@ -77,9 +78,13 @@ exports.tag_delete_post = asyncHandler(async (req, res, next) => {
 
 /* Tag Detail */
 exports.tag_detail = asyncHandler(async (req, res, next) => {
-  const tag = await TagModel.findById(req.params.id).exec();
+  const [tag, activities] = await Promise.all([
+    TagModel.findById(req.params.id).exec(),
+    ActivityModel.find({ tag: req.params.id }).exec(),
+  ])
   res.render('tag_detail', {
     title: `Tag: ${tag.name}`,
     tag: tag,
+    activities: activities,
   })
 });

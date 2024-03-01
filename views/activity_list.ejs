@@ -1,4 +1,11 @@
 <%- include('layout_head') -%>
-<h1><%= title %></h1>
+<h1><%= title %>: <%= allActivities.length %> <%= allActivities.length > 1 ? "items": "item" %></h1>
 <hr>
+<% for (activity of allActivities) { %>
+<dl>
+  <dt><b><a href="<%= activity.url %>"><%= activity.name %></a></b></dt>
+  <dd><a href="<%= activity.category.url %>"><%= activity.category.name %></a></dd>
+</dl>
+<hr>
+<% } %>
 <%- include('layout_foot') -%>

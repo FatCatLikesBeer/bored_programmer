@@ -1,5 +1,5 @@
 <%- include('layout_head') -%>
-<h1><%= title %></h1>
+<h1><%= title %>: <%= tags.length %> <%= tags.length > 1 ? "items" : "item" %></h1>
 <hr>
 <ul>
 <% tags.forEach( e => { %>
