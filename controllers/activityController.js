@@ -23,6 +23,7 @@ exports.activity_create_get = asyncHandler(async (req, res, next) => {
     title: "Create Activity",
     allCategories: allCategories,
     allTags: allTags,
+    activity: undefined,
   });
 });
 
@@ -43,7 +44,7 @@ exports.activity_create_post = [
     .escape(),
   body("description", "Desciption must not be empty.")
     .trim()
-    .isLength({ min: 1 })
+    .isLength({ min: 3 })
     .escape(),
   body("category", "Category must not be empty.")
     .trim()
@@ -54,6 +55,7 @@ exports.activity_create_post = [
   asyncHandler(async (req, res, next) => {
     // Extract validation errors from request.
     const errors = validationResult(req);
+    const activityMatch = await ActivityModel.findOne({ name: req.body.name }).exec();
 
     // Create a new Activity object from form's parameters
     const activity = new ActivityModel({
@@ -63,7 +65,7 @@ exports.activity_create_post = [
       tag: req.body.tag,
     });
 
-    if (!errors.isEmpty()) {
+    if (!errors.isEmpty() || activityMatch.name == req.body.name) {
       // Errors exist. Render form again with sanitized values/error message.
       const [allTags, allCategories] = await Promise.all([
         TagModel.find().sort({ name: 1 }).exec(),
@@ -75,16 +77,19 @@ exports.activity_create_post = [
           tag.checked = "true";
         }
       };
-      res.render('activity_detail', {
-        title: "Activity Detail",
+      res.render('activity_form', {
+        title: "Edit Activity",
         name: "",
         allCategories, allCategories,
         allTags: allTags,
+        activity: undefined,
+        errors: errors.array(),
       })
     } else {
       // Data from form is valid
       await activity.save();
       res.redirect(activity.url);
+      console.log(errors);
     }
   })
 ];
@@ -125,4 +130,10 @@ exports.activity_detail = asyncHandler(async (req, res, next) => {
     title: "Activity Detail",
     activity: activity,
   });
+});
+
+/* Using this export for testing & learning stuff */
+exports.testicle = asyncHandler(async (req, res, next) => {
+  const activityMatch = await ActivityModel.find({ name: req.body.name }).exec();
+  res.send(activityMatch);
 });
