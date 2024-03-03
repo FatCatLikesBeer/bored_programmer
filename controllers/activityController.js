@@ -55,7 +55,24 @@ exports.activity_create_post = [
   asyncHandler(async (req, res, next) => {
     // Extract validation errors from request.
     const errors = validationResult(req);
+
+    const [allTags, allCategories] = await Promise.all([
+      TagModel.find().sort({ name: 1 }).exec(),
+      CatgoryModel.find().sort({ name: 1 }).exec(),
+    ]);
+
+    // Check for pre-existing activity.
     const activityMatch = await ActivityModel.findOne({ name: req.body.name }).exec();
+    if (activityMatch.name == req.body.name) {
+      res.render('activity_form', {
+        title: "Create Activity",
+        name: "",
+        allCategories: allCategories,
+        allTags: allTags,
+        errors: [{ msg: `\"${req.body.name}\" activity already exists.`}],
+      })
+      return;
+    }
 
     // Create a new Activity object from form's parameters
     const activity = new ActivityModel({
@@ -65,12 +82,8 @@ exports.activity_create_post = [
       tag: req.body.tag,
     });
 
-    if (!errors.isEmpty() || activityMatch.name == req.body.name) {
+    if (!errors.isEmpty()) {
       // Errors exist. Render form again with sanitized values/error message.
-      const [allTags, allCategories] = await Promise.all([
-        TagModel.find().sort({ name: 1 }).exec(),
-        CatgoryModel.find().sort({ name: 1 }).exec(),
-      ]);
 
       for (tag of allTags) {
         if (activity.tag.includes(tag._id)) {
@@ -80,7 +93,7 @@ exports.activity_create_post = [
       res.render('activity_form', {
         title: "Edit Activity",
         name: "",
-        allCategories, allCategories,
+        allCategories: allCategories,
         allTags: allTags,
         activity: undefined,
         errors: errors.array(),

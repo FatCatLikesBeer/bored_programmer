@@ -29,6 +29,18 @@ exports.tag_create_post = [
     // Extract the validation errors from request.
     const errors = validationResult(req);
 
+    // Check for pre-existing tag.
+    const preExistingTag = await TagModel.findOne({ name: req.body.name }).exec();
+
+    if (preExistingTag?.name == req.body.name) {
+      res.render('tag_form', {
+        title: "Create Tag",
+        tag: undefined,
+        errors: [{ msg: `\"${req.body.name}\" tag already exists.`}]
+      });
+      return;
+    }
+
     // Create a tag object with esscaped and trimmed data.
     const tag = new TagModel({ name: req.body.name });
 

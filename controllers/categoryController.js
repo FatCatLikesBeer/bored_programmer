@@ -32,6 +32,17 @@ exports.category_create_post = [
     // Extract the validation errors from request.
     const errors = validationResult(req);
 
+    // Check for a pre-existing name.
+    const preExistingCategory = await CategoryModel.findOne({ name: req.body.name }).exec();
+    if (preExistingCategory?.name == req.body.name) {
+      res.render('category_form', {
+        title: "Create Category",
+        category: undefined,
+        errors: [{ msg: `\"${req.body.name}\" category already exists.`}],
+      });
+    return;
+    }
+
     // Create a category object with escaped and trimmed data.
     const newCategory = new CategoryModel({ name: req.body.name });
 

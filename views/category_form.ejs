@@ -12,7 +12,7 @@
 <% if (typeof errors != 'undefined') { %>
   <ul>
   <% errors.forEach(function(error) { %>
-    <li><%= error?.msg %></li>
+    <li><span class="text-warning"><%= error?.msg %></span></li>
   <% }); %>
   </ul>
 <% } %>
