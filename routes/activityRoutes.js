@@ -7,8 +7,11 @@ const activity_controller = require('../controllers/activityController.js');
 /* GET Activities page: list all tags */
 router.get('/', activity_controller.activity_list);
 
+/* GET Detail TEST Activity */
+router.get('/test', activity_controller.testicle_get);
+
 /* POST Detail TEST Activity */
-router.post('/test', activity_controller.testicle);
+router.post('/test', activity_controller.testicle_post);
 
 /* GET Create Activity */
 router.get('/create', activity_controller.activity_create_get);

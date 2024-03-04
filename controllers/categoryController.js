@@ -70,24 +70,101 @@ exports.category_create_post = [
   }),
 ];
 
+/* Category Update GET */
+exports.category_update_get = asyncHandler(async (req, res, next) => {
+  const category = await CategoryModel.findById(req.params.id).exec();
+  res.render('category_form', {
+    title: "Update Post",
+    category: category,
+    errors: undefined,
+  });
+})
+
+/* Category Update POST */
+exports.category_update_post = [
+  body("name", "Category must be at least 3 characters long.").trim().isLength({ min: 3 }).escape(),
+
+  // Check if theres are name collissions.
+  asyncHandler(async (req, res, next) => {
+    const catById = await CategoryModel.findById(req.params.id).exec();
+    const catByName = await CategoryModel.findOne({ name: req.body.name }).exec();
+
+    // Was an edit actually done to the Category?
+    if (catById?.name == req.body.name) {
+      res.render('category_form', {
+        title: "Edit Category",
+        errors: [{ msg: `\"${req.body.name}\" Category: no edits made.`}],
+        category: catById,
+      });
+      return;
+    }
+
+    // Does a Category with this name already exist?
+    if (catByName?.name == req.body.name) {
+      res.render('category_form', {
+        title: "Edit Category",
+        errors: [{ msg: `\"${req.body.name}\" Category already exists.`}],
+        category: catById,
+      });
+      return;
+    }
+    next();
+  }),
+
+  // Actual Update Function.
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    // Create a new Category object based on our input.
+    const category = new CategoryModel({
+      name: req.body.name,
+      _id: req.params.id, // This is required, or a new ID will be assigned!
+    });
+
+    if (!errors.isEmpty()) {
+      res.render('category_form', {
+        title: "Edit Category",
+        category: category,
+        errors: errors.array(),
+      })
+    } else {
+      // Update the Category with our contents, return the Category to a variable.
+      const updatedCat = await CategoryModel.findByIdAndUpdate(req.params.id, category, {});
+      // Redirect to updated Category's details page.
+      res.redirect(updatedCat.url);
+    }
+  }),
+]
+
 /* Category Delete GET */
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
-  res.send(`Category Delete GET: not yet implemented. <br><br><h1>${req.params.id}</h1>`);
+  const category = await CategoryModel.findById(req.params.id).exec();
+  res.render('category_delete', {
+    title: "Delete Category",
+    category: category,
+  })
 });
 
 /* Category Delete POST */
 exports.category_delete_post = asyncHandler(async (req, res, next) => {
-  res.send(`Category Delete POST: not yet implemented. <br><br><h1>${req.params.id}</h1>`);
-});
+  // Make sure that no Activites exist which use the requested Category.
+  const category = await CategoryModel.findById(req.params.id).exec();
+  const activities = await ActivityModel.find({ category: req.params.id }).exec();
 
-/* Category Update GET */
-exports.category_update_get = asyncHandler(async (req, res, next) => {
-  res.send(`Category Update GET: not yet implemented. <br><br><h1>${req.params.id}</h1>`);
-});
-
-/* Category Update POST */
-exports.category_update_post = asyncHandler(async (req, res, next) => {
-  res.send(`Category Update POST: not yet implemented. <br><br><h1>${req.params.id}</h1>`);
+  // Checks if there exist Activities with this Category.
+  if (activities.length != 0) {
+    res.render('category_delete', {
+      title: "Delete Category",
+      category: category,
+      activities: activities,
+      errors: `Please remove the \"${category.name}\" tag from the following Activities:`,
+    });
+    return;
+  } else {
+    // If no activities, then delete category and redirect to category list.
+    await CategoryModel.findByIdAndDelete(req.params.id).exec();
+    res.redirect('/categories/');
+  }
 });
 
 /* Category Detail GET */

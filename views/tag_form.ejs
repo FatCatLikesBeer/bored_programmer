@@ -1,6 +1,6 @@
 <%- include('layout_head') -%>
-<% const tagName = typeof tag === 'undefined' ? '' : ": " + tag?.name %>
-<h1><%= title %><%= tagName %></h1>
+<% const tagName = typeof tag === 'undefined' ? '' : tag?.name %>
+<h1><%= title %><%= typeof tag === 'undefined' ? '' : ': ' %><%= tagName %></h1>
 <form method="POST">
   <div class="form-group">
     <label for="name" class="form-label">Tag:</label>

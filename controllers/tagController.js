@@ -79,7 +79,7 @@ exports.tag_update_get = asyncHandler(async (req, res, next) => {
 
 /* Tag Update Post */
 exports.tag_update_post = [
-  body("name", "Tag must not be empty.").trim().isLength({ min: 3 }).escape(),
+  body("name", "Tag must be at least 3 characters long.").trim().isLength({ min: 3 }).escape(),
 
   // Check if theres are name collissions.
   asyncHandler(async (req, res, next) => {
@@ -90,22 +90,25 @@ exports.tag_update_post = [
     if (tagById?.name == req.body.name) {
       res.render('tag_form', {
         title: "Edit Tag",
-        errors: [{ msg: `\"${req.body.name}\" tag: no edits made.`}],
+        errors: [{ msg: `\"${req.body.name}\" Tag: no edits made.`}],
         tag: tagById,
       });
       return;
     }
 
+    // Does a Tag with this name already exist?
     if (tagByName?.name == req.body.name) {
       res.render('tag_form', {
         title: "Edit Tag",
-        errors: [{ msg: `\"${req.body.name}\" tag alreay exists.` }],
+        errors: [{ msg: `\"${req.body.name}\" Tag alreay exists.` }],
         tag: tagById,
       });
       return;
     }
     next();
   }),
+
+  // Actual Update Function.
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
@@ -115,7 +118,7 @@ exports.tag_update_post = [
       _id: req.params.id, // This is required, or a new ID will be assigned!
     });
 
-    if(!errors.isEmpty()) {
+    if (!errors.isEmpty()) {
       res.render('tag_form', {
         title: "Edit Tag",
         errors: errors.array(),
@@ -125,7 +128,7 @@ exports.tag_update_post = [
     } else {
       // Update the Tag with our contents, return that Tag object to a variable.
       const updatedTag = await TagModel.findByIdAndUpdate(req.params.id, tag, {});
-      // Rediret to tag detail.
+      // Rediret to updated Tag detail.
       res.redirect(updatedTag.url);
     }
   }),
@@ -142,7 +145,7 @@ exports.tag_delete_get = asyncHandler(async (req, res, next) => {
 
 /* Tag Delete Post */
 exports.tag_delete_post = asyncHandler(async (req, res, next) => {
-  // Make sure that no Activites exist which use the requested tags.
+  // Make sure that no Activites exist which use the requested Tag.
   const tag = await TagModel.findById(req.params.id).exec();
   const activities = await ActivityModel.find({ tag: req.params.id }).exec();
 

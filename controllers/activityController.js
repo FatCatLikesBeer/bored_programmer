@@ -146,7 +146,12 @@ exports.activity_detail = asyncHandler(async (req, res, next) => {
 });
 
 /* Using this export for testing & learning stuff */
-exports.testicle = asyncHandler(async (req, res, next) => {
+exports.testicle_get = asyncHandler(async (req, res, next) => {
+  console.log(req);
+  res.send("check the console");
+});
+
+exports.testicle_post = asyncHandler(async (req, res, next) => {
   const activityMatch = await ActivityModel.find({ name: req.body.name }).exec();
   res.send(activityMatch);
 });
