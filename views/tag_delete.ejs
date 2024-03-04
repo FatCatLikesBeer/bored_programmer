@@ -1,0 +1,25 @@
+<%- include('layout_head') -%>
+<% const tagName = typeof tag === 'undefined' ? '' : tag?.name %>
+<h1><%= title %><%= ": " + tagName %></h1>
+<hr>
+<form method="POST">
+    <h3 class="text-warning">Pressing "Delete" will delete the <b><%= tag.name %></b> tag!</h3>
+    <p class="text-danger">This can NOT be undone!</p>
+    <hr>
+<% if (typeof errors != 'undefined') { %>
+  <span class="text-warning"><%= errors %></span>
+  <br>
+  <br>
+  <ul>
+  <% activities.forEach( e => { %>
+    <li><a href="<%= e.url %>"><%= e.name %></a></li>
+  <% }); %>
+  </ul>
+  <hr>
+<% } %>
+    <input class="btn btn-danger" type="submit" value="Delete">
+</form>
+    <br>
+    <button class="btn btn-primary" onClick="window.history.go(-1); return false;" alt="Go Back">Cancel</button>
+<br />
+<%- include('layout_foot') -%>

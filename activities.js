@@ -1,3 +1,16 @@
+const tags = [
+  "API", "C", "CSS",
+  "Cloud", "Django", "Expo",
+  "Express", "HTML", "IDE",
+  "JavaScript", "Linux", "MeetUp",
+  "Nature", "PHP", "Python",
+  "React", "SSH", "Shell",
+  "Shoes", "Swift", "VIM", "Web", "WebGL",
+  "Video"
+];
+
+const categories = ["Editor", "Programming", "Social", "Systems", "Learning"];
+
 const activities = [
   {
     "id": 0,
@@ -124,17 +137,14 @@ const activities = [
     "description": "Create an app that works for web, iOS, and Android!",
     "category": categories[1],
     "tags": [tags[15], tags[5], tags[9]]
+  },
+  {
+    "id": 18,
+    "activity": "Watch a FreeCodeCamp video on a relevent, but unfamiliar subject",
+    "description": "Watching coding videos is kind of a bad habit that could lead to tutorial hell. That's where we only watch tutorials, but never implement the examples or commit the concepts to memory. However, these tutorials can provide some major insights and tricks that could be benefitial to any programmer, regardless of the technology or language.",
+    "category": categories[4],
+    "tags": [tags[23]],
   }
 ];
 
-const tags = [
-  "API", "C", "CSS",
-  "Cloud", "Django", "Expo",
-  "Express", "HTML", "IDE",
-  "JavaScript", "Linux", "MeetUp",
-  "Nature", "PHP", "Python",
-  "React", "SSH", "Shell",
-  "Shoes", "Swift", "VIM", "Web", "WebGL"
-];
-
-const categories = ["Editor", "Programming", "Social", "Systems"];
+module.exports = {tags, categories, activities}

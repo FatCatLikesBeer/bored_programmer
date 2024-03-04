@@ -63,7 +63,7 @@ exports.activity_create_post = [
 
     // Check for pre-existing activity.
     const activityMatch = await ActivityModel.findOne({ name: req.body.name }).exec();
-    if (activityMatch.name == req.body.name) {
+    if (activityMatch?.name == req.body.name) {
       res.render('activity_form', {
         title: "Create Activity",
         name: "",
