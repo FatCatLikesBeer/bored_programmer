@@ -2,6 +2,7 @@ const ActivityModel = require('../models/activity.js');
 const TagModel = require('../models/tags.js');
 const CatgoryModel = require('../models/categories.js');
 const asyncHandler = require('express-async-handler');
+const he = require('he');
 const { body, validationResult } = require('express-validator');
 
 /* Activity List GET */
@@ -29,7 +30,7 @@ exports.activity_create_get = asyncHandler(async (req, res, next) => {
 
 /* Activity Create POST */
 exports.activity_create_post = [
-  // Convert the tags to an array.
+  // Convert the tags to an array. We need to do this to check for errors
   (req, res, next) => {
     if (!Array.isArray(req.body.tag)) {
       req.body.tag = typeof req.body.tag === "undefined" ? [] : [req.body.tag];
@@ -42,7 +43,7 @@ exports.activity_create_post = [
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("description", "Desciption must not be empty.")
+  body("description", "Description must have more words.")
     .trim()
     .isLength({ min: 3 })
     .escape(),
@@ -77,9 +78,9 @@ exports.activity_create_post = [
     // Create a new Activity object from form's parameters
     const activity = new ActivityModel({
       name: req.body.name,
-      description: req.body.description,
+      description: he.decode(req.body.description),
       category: req.body.category,
-      tag: req.body.tag,
+      tag: typeof req.body.tag === "undefined" ? [] : req.body.tag,
     });
 
     if (!errors.isEmpty()) {
@@ -109,15 +110,129 @@ exports.activity_create_post = [
 
 /* Activity Update GET */
 exports.activity_update_get = asyncHandler(async (req, res, next) => {
+  const [
+    activity,
+    allCategories,
+    allTags,
+  ] = await Promise.all([
+      ActivityModel.findById(req.params.id).exec(),
+      CatgoryModel.find().sort({ name: 1 }).exec(),
+      TagModel.find().sort({ name: 1 }).exec(),
+  ]);
+
+  // Mark our selected genres as checked.
+  allTags.forEach((tag) => {
+    if (activity.tag.includes(tag._id)) {tag.checked = true};
+  });
+
+  // Render the form
   res.render('activity_form', {
     title: "Update Activity",
-  })
+    activity: activity,
+    allCategories: allCategories,
+    allTags: allTags,
+  });
 });
 
 /* Activity Update POST */
-exports.activity_update_post = asyncHandler(async (req, res, next) => {
-  res.send(`Activity Update POST: Not yet implemented <br><br><h1>${req.params.id}</h1>`);
-});
+exports.activity_update_post = [
+  // Convert the tags to an array. We need to do this to check for errors
+  (req, res, next) => {
+    if (!Array.isArray(req.body.tag)) {
+      req.body.tag = typeof req.body.tag === "undefined" ? [] : [req.body.tag];
+    }
+    next();
+  },
+
+  // Validate & sanitize fields.
+  body("name", "Name must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("description", "Description must have more words.")
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  body("category", "Category must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("genre.*").escape(),
+
+  // Check if theres are name collissions.
+  asyncHandler(async (req, res, next) => {
+    const [
+      actById,
+      allCategories,
+      allTags,
+      actByName,
+    ] = await Promise.all([
+        ActivityModel.findById(req.params.id).exec(),
+        CatgoryModel.find().sort({ name: 1 }).exec(),
+        TagModel.find().sort({ name: 1 }).exec(),
+        ActivityModel.findOne({ name: req.body.name }).exec(),
+      ]);
+
+    // Mark our selected genres as checked.
+    allTags.forEach((tag) => {
+      if (actById.tag.includes(tag._id)) {tag.checked = true};
+    });
+
+    // I'm not gonna bother checking if any edits were actually made.
+    // Does Activity with this name already exist?
+    // Unless it's the Activity we're actively trying to edit...
+    if (actByName?.name == req.body.name && actByName?._id.toString() != actById._id.toString()) {
+      res.render('activity_form', {
+        title: "Update Activity",
+        activity: actById,
+        allCategories: allCategories,
+        allTags: allTags,
+        errors: [{ msg: `An activity with "${req.body.name}" name already exists. `}]
+      });
+      return;
+    }
+    next();
+  }),
+
+  // Actual Update Function.
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    // Create a Activity object based on parameters passed.
+    const activity = new ActivityModel({
+      name: req.body.name,
+      description: he.decode(req.body.description),
+      category: req.body.category,
+      tag: typeof req.body.tag === "undefined" ? [] : req.body.tag,
+      _id: req.params.id, // This is required, or a new ID will be assigned!
+    });
+
+    if (!errors.isEmpty()) {
+      // Rerender Activity form with errors.
+      const [allCategories, allTags, actById] = await Promise.all([
+        CatgoryModel.find().sort({ name: 1 }).exec(),
+        TagModel.find().sort({ name: 1 }).exec(),
+        ActivityModel.findById(req.params.id).exec(),
+      ]);
+      // Mark our selected genres as checked.
+      allTags.forEach((tag) => {
+        if (actById.tag.includes(tag._id)) {tag.checked = true};
+      });
+      res.render('activity_form', {
+        title: "Update Activity",
+        activity: activity,
+        errors: errors.array(),
+        allCategories: allCategories,
+        allTags: allTags,
+      });
+    } else {
+      // Update the Activity & return its value.
+      const updatedAct = await ActivityModel.findByIdAndUpdate(req.params.id, activity, {}).exec();
+      // Redirect to the update Activity detail page
+      res.redirect(updatedAct.url)
+    }
+  }),
+];
 
 /* Activity Delete GET */
 exports.activity_delete_get = asyncHandler(async (req, res, next) => {

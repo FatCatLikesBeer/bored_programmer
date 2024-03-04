@@ -1,15 +1,17 @@
 <%- include('layout_head') -%>
 <% const tags = typeof allTags != undefined ? allTags : undefined; %>
 <% const categories = typeof allCategories != undefined ? allCategories : undefined; %>
-<h1><%= title %></h1>
+<% const activityName = typeof activity != 'undefined' ? activity?.name : undefined; %>
+<% const activityDes = typeof activity != 'undefined' ? activity?.description : undefined; %>
+<h1><%= title %><%= typeof activity != 'undefined' ? ": " + activity?.name : "" %></h1>
 <hr>
 <form method="POST">
   <div class="mb-3">
-    <label class="form-label" for="name">Activity Name: </label>
-    <input id="name" class="form-control" type="text" name="name" required placeholder="Create a new Activity" />
+    <label class="form-label" for="name">Activity Name:</label>
+    <input id="name" class="form-control" type="text" name="name" required placeholder="Create a new Activity" value="<%= activityName %>"/>
   </div>
   <div class="mb-3">
-    <label class="form-label" for="description">Activity Description: </label>
+    <label class="form-label" for="description">Activity Description:</label>
     <textarea id="description" class="form-control" type="text" name="description" required placeholder="Some activities need a lot of explaining, some don't need any! Around 2 to 4 sentences should be fine. But a description is required..."></textarea>
   </div>
   <div class="mb-3">
@@ -53,4 +55,10 @@
   <% }); %>
   </ul>
 <% } %>
+<script>
+  const textBox = document.getElementById("description");
+  <% if (typeof activityDes != 'undefined') { %>
+    textBox.textContent = "<%- activityDes %>"
+  <% } %>
+</script>
 <%- include('layout_foot') -%>
