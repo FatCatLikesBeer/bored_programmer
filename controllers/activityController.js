@@ -7,7 +7,7 @@ const { body, validationResult } = require('express-validator');
 
 /* Activity List GET */
 exports.activity_list = asyncHandler(async (req, res, next) => {
-  const allActivities = await ActivityModel.find().sort({ name: 1}).populate("category").exec();
+  const allActivities = await ActivityModel.find().sort({ name: 1}).populate("category").populate("tag").exec();
   res.render('activity_list', {
     title: "List of Activites",
     allActivities: allActivities,
@@ -77,7 +77,7 @@ exports.activity_create_post = [
 
     // Create a new Activity object from form's parameters
     const activity = new ActivityModel({
-      name: req.body.name,
+      name: he.decode(req.body.name),
       description: he.decode(req.body.description),
       category: req.body.category,
       tag: typeof req.body.tag === "undefined" ? [] : req.body.tag,
@@ -200,7 +200,7 @@ exports.activity_update_post = [
 
     // Create a Activity object based on parameters passed.
     const activity = new ActivityModel({
-      name: req.body.name,
+      name: he.decode(req.body.name),
       description: he.decode(req.body.description),
       category: req.body.category,
       tag: typeof req.body.tag === "undefined" ? [] : req.body.tag,
@@ -236,12 +236,17 @@ exports.activity_update_post = [
 
 /* Activity Delete GET */
 exports.activity_delete_get = asyncHandler(async (req, res, next) => {
-  res.send(`Activity Delete GET: Not yet implemented <br><br><h1>${req.params.id}</h1>`);
+  const activity = await ActivityModel.findById(req.params.id).populate("category").populate("tag").exec();
+  res.render('activity_delete', {
+    title: "Delete Activity",
+    activity: activity,
+  });
 });
 
 /* Activity Delete POST */
 exports.activity_delete_post = asyncHandler(async (req, res, next) => {
-  res.send(`Activity Delete POST: Not yet implemented <br><br><h1>${req.params.id}</h1>`);
+  ActivityModel.findByIdAndDelete(req.params.id).exec();
+  res.redirect('/activities');
 });
 
 /* Activity Detail GET */

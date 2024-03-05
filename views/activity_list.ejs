@@ -3,8 +3,15 @@
 <hr>
 <% for (activity of allActivities) { %>
 <dl>
-  <dt><b><a href="<%= activity.url %>"><%= activity.name %></a></b></dt>
-  <dd><a href="<%= activity.category.url %>"><%= activity.category.name %></a></dd>
+  <dt><h4><a href="<%= activity.url %>"><%= activity.name %></a></h4></dt>
+  <dd><b><a href="<%= activity.category.url %>"><%= activity.category.name %><b></a></dd>
+  <% if (activity.tag.length > 0) { %>
+    <ul style="padding-left: 0px;">
+      <% activity.tag.forEach( e => { %>
+        <li style="display: inline; margin-right: 10px;">• <a href="<% e.url %>"><%= e.name %></a></li>
+      <% }); %>
+    </ul>
+  <% } %>
 </dl>
 <hr>
 <% } %>

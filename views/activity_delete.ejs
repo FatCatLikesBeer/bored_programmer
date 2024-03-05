@@ -1,25 +1,38 @@
 <%- include('layout_head') -%>
-<% const actvityName = typeof actvity === 'undefined' ? '' : actvity?.name %>
-<h1><%= title %><%= ": " + actvityName %></h1>
+<% const activityName = typeof activity === 'undefined' ? '' : activity?.name %>
+<h1><%= title %><%= ": " + activityName %></h1>
 <hr>
-<form method="POST">
-    <h3 class="text-warning">Pressing "Delete" will delete the <b><%= actvity.name %></b> actvity!</h3>
-    <p class="text-danger">This can NOT be undone!</p>
+<form id="theForm" method="POST">
+    <h4>Activity: <%= activity.name %></h4>
+    <p><%= activity.description %></p>
     <hr>
-<% if (typeof errors != 'undefined') { %>
-  <span class="text-warning"><%= errors %></span>
-  <br>
-  <br>
-  <ul>
-  <% activities.forEach( e => { %>
-    <li><a href="<%= e.url %>"><%= e.name %></a></li>
-  <% }); %>
-  </ul>
-  <hr>
-<% } %>
+    <p class="text-warning">This <b>will not</b> delete the following:</p>
+    <ul>
+      <li class="text-warning">Category</li>
+      <li class="text-warning">Tags</li>
+    </ul>
+    <hr>
     <input class="btn btn-danger" type="submit" value="Delete">
 </form>
     <br>
-    <button class="btn btn-primary" onClick="window.history.go(-1); return false;" alt="Go Back">Cancel</button>
+    <button class="btn btn-primary" onClick="goBack()" alt="Go Back">Cancel</button>
 <br />
+<script>
+  // Cancel button logic.
+  function goBack() {
+      window.history.go(-1);
+      return false;
+    }
+
+  // Add a popup confirmation for deletion.
+  document.getElementById("theForm").addEventListener("submit", (e) => {
+      event.preventDefault();
+
+      if (window.confirm("Deleting an Activity can not be reversed!")) {
+        event.target.submit();
+      } else {
+        console.log("Form submission canceled by user.");
+      }
+    });
+</script>
 <%- include('layout_foot') -%>
