@@ -11,6 +11,7 @@ var usersRouter = require('./routes/users');
 const activityRouter = require('./routes/activityRoutes.js');
 const categoryRouter = require('./routes/categoryRoutes.js');
 const tagRouter = require('./routes/tagRoutes.js');
+const apiRouter = require('./routes/apiRoutes.js');
 
 // Connect to MongoDB
 const mongoDb = process.env.MONGODB_URI;
@@ -36,6 +37,7 @@ app.use('/users', usersRouter);
 app.use('/tags', tagRouter);
 app.use('/categories', categoryRouter);
 app.use('/activities', activityRouter);
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
