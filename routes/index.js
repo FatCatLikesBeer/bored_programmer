@@ -3,29 +3,21 @@ var router = express.Router();
 const asyncHandler = require('express-async-handler');
 
 /* GET home page. */
-router.get('/', asyncHandler(async (req, res, next) => {
-  fetch('http://localhost:3000/api/')
-    .then(response => response.json())
-    .then(data => {
-      res.render('index', {
-        title: "Bored Programmer API",
-        code: replaceStuff(JSON.stringify(data)),
-      })
-    })
-})
-);
+router.get('/', (req, res, next) => {
+  res.render('index', { title: "Bored Programmer API"});
+});
 
 router.post('/', function(req, res, next) {
   res.send("This shouldn't do anyting, how did you get here?")
 });
 
-function replaceStuff(input) {
+function indentStuff(input) {
   const result = input
-  .replace('{', '{\n\t')
+  .replace('{', '{\n  ')
   .replace(/:/g, ': ')
-  .replace(',"des', ',\n\t"des')
-  .replace(',"cat', ',\n\t"cat')
-  .replace(',"tag', ',\n\t"tag')
+  .replace(',"des', ',\n  "des')
+  .replace(',"cat', ',\n  "cat')
+  .replace(',"tag', ',\n  "tag')
   .replace('}', '\n}')
   .replace(/,"/, ', "');
   return result;

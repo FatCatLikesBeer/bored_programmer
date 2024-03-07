@@ -1,8 +1,41 @@
 <%- include('layout_head') -%>
+  <style>
+  pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      background-color: darkgrey;
+    }
+  </style>
   <% if (typeof code == 'undefined') { %>
     <% code = "stuff goes here" %>
   <% } %>
   <h1><%= title %></h1>
   <p>Welcome to <%= title %></p>
-  <pre><code class="language-json"><%= code %></code></pre>
+  <hr>
+  <button class="btn btn-primary" onClick="getAndDisplayAPI()">New Activity</button>
+  <div id="code"></div>
+  <script>
+  const getAndDisplayAPI = () => {
+    const code = document.getElementById("code");
+    fetch('http://localhost:3000/api/')
+      .then(response => response.json())
+      .then(data => {
+          const firstStep = indentStuff(JSON.stringify(data));
+          code.innerHTML = `<pre><code class="json">${firstStep}</code></pre>`
+          hljs.highlightAll();
+          });
+  }
+  function indentStuff(input) {
+    const result = input
+      .replace('{', '{\n  ')
+      .replace(/:/g, ': ')
+      .replace(',"des', ',\n  "des')
+      .replace(',"cat', ',\n  "cat')
+      .replace(',"tag', ',\n  "tag')
+      .replace('}', '\n}')
+      .replace(/,"/, ', "');
+    return result;
+  };
+  getAndDisplayAPI();
+  </script>
 <%- include('layout_foot') -%>
