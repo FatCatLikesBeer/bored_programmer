@@ -34,7 +34,7 @@
   <script>
   const getAndDisplayAPI = () => {
     const code = document.getElementById("code");
-    fetch('http://localhost:3000/api/')
+    fetch('http://bored-programmer-api.fly.dev/api/')
       .then(response => response.json())
       .then(data => {
           const firstStep = indentStuff(JSON.stringify(data));
