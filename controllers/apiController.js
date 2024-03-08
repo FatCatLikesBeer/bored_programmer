@@ -48,3 +48,13 @@ exports.api_random = asyncHandler(async (req, res, next) => {
       res.send("Error: ", error);
     });
 });
+
+exports.api_query = asyncHandler(async (req, res, next) => {
+  const tag = req.query.tag;
+  if (tag == undefined) {
+    res.send('no query provided');
+  } else {
+    const result = ActivityModel.findOne({ tag: tag }).exec();
+    return result;
+  }
+})

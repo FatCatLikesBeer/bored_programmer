@@ -12,8 +12,21 @@
   <h1><%= title %></h1>
   <p>Welcome to <%= title %></p>
   <hr>
+  <h3>Activity</h3>
   <button class="btn btn-primary" onClick="getAndDisplayAPI()">New Activity</button>
-  <div id="code"></div>
+  <div id="code" style="padding-top: 12px"></div>
+  <hr>
+  <h3>Example Activity</h3>
+  <p>All Activites have the following structure:</p>
+  <p>GET: /api/</p>
+  <pre><code class="json">
+{
+  "name": "This is the name of the Activity",
+  "description": "This is a brief description of the Activity",
+  "category": "This is a single value category that the Activity can fall into",
+  "tag": ["Tag1", "Tag2"] // Array of associated topics, array can be empty
+}
+  </pre></code>
   <script>
   const getAndDisplayAPI = () => {
     const code = document.getElementById("code");
